@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.slipper.service.group.dao.GroupDao">
+
+    <!-- 查询用户加入的群组列表 -->
+    <select id="getGroupsByUserId" resultType="com.slipper.service.group.entity.GroupEntity">
+        SELECT g.id, g.group_name, g.owner_id, g.created_at
+        FROM `group` g
+                 LEFT JOIN `group_member` gm ON g.id = gm.group_id
+        WHERE gm.user_id = #{userId}
+        ORDER BY g.created_at DESC
+    </select>
+
+    <!-- 插入群组 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `group` (group_name, owner_id, created_at)
+        VALUES (#{groupName}, #{ownerId}, #{createdAt})
+    </insert>
+
+    <!-- 删除群组 -->
+    <delete id="deleteById">
+        DELETE FROM `group`
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 更新群组信息 -->
+    <update id="updateGroup">
+        UPDATE `group`
+        SET group_name = #{groupName}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

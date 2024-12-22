@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.slipper.service.group.dao.GroupMemberDao">
+
+    <!-- 根据群组 ID 查询成员列表 -->
+    <select id="getMemberIdsByGroupId" resultType="java.lang.Long">
+        SELECT user_id
+        FROM `group_member`
+        WHERE group_id = #{groupId}
+    </select>
+
+    <!-- 添加成员到群组 -->
+    <insert id="insert">
+        INSERT INTO `group_member` (group_id, user_id, joined_at)
+        VALUES (#{groupId}, #{userId}, #{joinedAt})
+    </insert>
+
+    <!-- 删除群组成员 -->
+    <delete id="removeByGroupIdAndUserId">
+        DELETE FROM `group_member`
+        WHERE group_id = #{groupId} AND user_id = #{userId}
+    </delete>
+
+    <!-- 查询某用户是否在群组中 -->
+    <select id="isMemberInGroup" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM `group_member`
+        WHERE group_id = #{groupId} AND user_id = #{userId}
+    </select>
+</mapper>
